@@ -13,8 +13,8 @@
     "windows": [
       {
         "title": "pma-vue",
-        "width": 800,
-        "height": 600
+        "width": 600,
+        "height": 500
       }
     ],
     "security": {
