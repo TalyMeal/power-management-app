@@ -17,7 +17,25 @@ export async function start(clockfaces: Clockfaces[], setDelayId: {
             }
             clockfaces[2].vl--
         }, 1000)
-        setDelayId.timeoutId = await func(clockfaces.reduce((prev, curr) => prev + curr.vl, 0) * 1000)
+
+        const delay = clockfaces.reduce((prev, curr) => {
+            switch (curr.label) {
+                case 'hours':
+                    prev = prev + curr.vl * 60 * 60
+                    break;
+                case 'minutes':
+                    prev = prev + curr.vl * 60
+                    break;  
+                case 'seconds':
+                    prev = prev + curr.vl * 1
+                    break;             
+                default:
+                    break;
+            }
+            return prev
+        }, 0)
+
+        setDelayId.timeoutId = await func(delay * 1000)
     }
 }
 
