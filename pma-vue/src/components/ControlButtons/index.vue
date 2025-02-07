@@ -10,8 +10,8 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="d-flex align-center flex-row justify-center">
-        <v-btn-toggle>
+    <div class="d-flex align-center flex-row justify-center pa-6">
+        <v-btn-toggle :divided="true">
             <v-btn style="width: 196px" :disabled="props.isDisable"
                 @click="start(props.clockfaceData!.clockfaces, props.clockfaceData!.setDelayId, props.clockfaceData!.action)">START
             </v-btn>

@@ -8,10 +8,16 @@ import { Clockfaces } from './types';
 
 const theme = useTheme()
 
-const [clockfaceData, isDisable] = [ref(), ref<boolean>(true)]
+const [clockfaceData, switchTheme, isDisable] = [ref(), ref("mdi-weather-sunny"), ref<boolean>(true)]
 
 function toggleTheme() {
-  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+  if(theme.global.current.value.dark){
+    theme.global.name.value = 'light'
+    switchTheme.value = "mdi-weather-night"
+  } else {
+    theme.global.name.value = 'dark'
+    switchTheme.value = "mdi-weather-sunny"
+  }
 }
 
 onUpdated(() => {
@@ -23,14 +29,12 @@ watch(clockfaceData, () => isDisable.value = clockfaceData.value.clockfaces.redu
 
 watch(isDisable, () => clearInterval(clockfaceData.value.setDelayId.intervalId))
 
-
 </script>
 
 <template>
   <v-app>
     <main class="container">
-      <h1>Power Management Timer</h1>
-      <v-btn @click="toggleTheme">toggle theme</v-btn>
+      <v-btn style="position: absolute; right: 10px; top: 10px;" icon variant="plain" @click="toggleTheme"><v-icon >{{switchTheme}}</v-icon></v-btn>
       <ClockFace @response="(msg: any) => clockfaceData = msg" />
       <ActionButtons @response="(msg: any) => clockfaceData.action = msg" />
       <ControlButtons :isDisable="isDisable" :clockfaceData="clockfaceData"/>
@@ -44,6 +48,7 @@ watch(isDisable, () => clearInterval(clockfaceData.value.setDelayId.intervalId))
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
+  width: 450px;
 
   color: #0f0f0f;
   background-color: #f6f6f6;
@@ -55,16 +60,24 @@ watch(isDisable, () => clearInterval(clockfaceData.value.setDelayId.intervalId))
   -webkit-text-size-adjust: 100%;
 }
 
+html,
+body {
+  user-select: none;
+  -ms-overflow-style: none; /* IE and Edge /
+scrollbar-width: none; / Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+html::-webkit-scrollbar {
+  display: none;
+}
+
 .container {
   margin: 0;
-  padding-top: 10vh;
+  padding-top: 6vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  text-align: center;
-}
-
-h1 {
   text-align: center;
 }
 

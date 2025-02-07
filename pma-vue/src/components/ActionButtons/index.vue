@@ -28,15 +28,15 @@ watch(action, () => emit('response', action))
 
 <template>
   <div class="d-flex align-center flex-row justify-center">
-    <v-btn-toggle color="deep-purple-accent-3">
-      <v-btn @click="setAction('sleep')">
-        <v-icon icon="mdi-power-sleep"></v-icon>
-      </v-btn>
-      <v-btn @click="setAction('reboot')">
-        <v-icon icon="mdi-restart"></v-icon>
+    <v-btn-toggle color="deep-purple-accent-3" :divided="true">
+      <v-btn @click="setAction('sleep')" >
+        <v-icon >{{ "mdi-power-sleep" }}</v-icon>
       </v-btn>
       <v-btn @click="setAction('shutdown')">
-        <v-icon icon="mdi-power"></v-icon>
+        <v-icon >{{ "mdi-power" }}</v-icon>
+      </v-btn>
+      <v-btn @click="setAction('reboot')">
+        <v-icon >{{ "mdi-restart" }}</v-icon>
       </v-btn>
     </v-btn-toggle>
   </div>
