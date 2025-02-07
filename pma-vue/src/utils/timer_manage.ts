@@ -2,7 +2,7 @@ import { Clockfaces } from "../types";
 
 export async function start(clockfaces: Clockfaces[], setDelayId: {
     intervalId: number; timeoutId: number;
-}, func: (time: number) => Promise<number>) {
+}, func: Function) {
     if (clockfaces.reduce((prev, curr) => prev + curr.vl, 0) > 0) {
         setDelayId.intervalId = setInterval(() => {
 

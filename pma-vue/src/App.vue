@@ -1,26 +1,41 @@
 <script setup lang="ts">
 import { useTheme } from 'vuetify'
 import ClockFace from "./components/ClockFace/index.vue";
-import { ref } from "vue";
+import ActionButtons from "./components/ActionButtons/index.vue";
+import ControlButtons from "./components/ControlButtons/index.vue";
+import { onUpdated, ref, watch } from "vue";
+import { Clockfaces } from './types';
 
 const theme = useTheme()
 
-const result = ref()
+const [clockfaceData, isDisable] = [ref(), ref<boolean>(true)]
 
-function toggleTheme () {
+function toggleTheme() {
   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
 }
+
+onUpdated(() => {
+  clockfaceData && clockfaceData.value.clockfaces.reduce((prev: number, curr: Clockfaces) => prev + curr.vl, 0) === 0 ?
+    clearInterval(clockfaceData.value.setDelayId.intervalId) : null
+})
+
+watch(clockfaceData, () => isDisable.value = clockfaceData.value.clockfaces.reduce((prev: number, curr: Clockfaces) => prev + curr.vl, 0) === 0)
+
+watch(isDisable, () => clearInterval(clockfaceData.value.setDelayId.intervalId))
+
 
 </script>
 
 <template>
   <v-app>
-  <main class="container">
-    <h1>Power Management Timer</h1>
-    <v-btn @click="toggleTheme">toggle theme</v-btn>
-      <ClockFace @response="(msg: any) => result = msg"/>
-  </main>
-</v-app>
+    <main class="container">
+      <h1>Power Management Timer</h1>
+      <v-btn @click="toggleTheme">toggle theme</v-btn>
+      <ClockFace @response="(msg: any) => clockfaceData = msg" />
+      <ActionButtons @response="(msg: any) => clockfaceData.action = msg" />
+      <ControlButtons :isDisable="isDisable" :clockfaceData="clockfaceData"/>
+    </main>
+  </v-app>
 </template>
 
 <style>
@@ -66,5 +81,4 @@ input {
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
   outline: none;
 }
-
 </style>

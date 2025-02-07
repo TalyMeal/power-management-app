@@ -18,7 +18,7 @@ onUpdated(() => {
 })
 
 const onChange = (e: any) => {
-  count.value = e.target.value < props.limit! && e.target.value > 0 ?
+  count.value = e.target.value < props.limit! && e.target.value >= 0 ?
     e.target.value :
     props.limit!
 
