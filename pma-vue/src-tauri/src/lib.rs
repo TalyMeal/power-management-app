@@ -4,11 +4,6 @@ use system_shutdown::reboot;
 use system_shutdown::sleep;
 
 #[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
-#[tauri::command]
 fn os_shutdown() {
     match shutdown() {
         Ok(_) => println!("Shutting down, bye!"),
@@ -36,8 +31,7 @@ fn os_sleep() {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, 
-                                                 os_shutdown, 
+        .invoke_handler(tauri::generate_handler![os_shutdown, 
                                                  os_reboot,
                                                  os_sleep])
         .run(tauri::generate_context!())

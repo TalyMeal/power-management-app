@@ -7,16 +7,19 @@ const props = defineProps({
     clockfaceData: Object,
 })
 
+
 </script>
 
 <template>
     <div class="d-flex align-center flex-row justify-center pa-6">
         <v-btn-toggle :divided="true">
             <v-btn style="width: 196px" :disabled="props.isDisable"
-                @click="start(props.clockfaceData!.clockfaces, props.clockfaceData!.setDelayId, props.clockfaceData!.action)">START
+                @click="start(props.clockfaceData!.clockfaces, props.clockfaceData!.setDelayId)">START
             </v-btn>
             <v-btn style="width: 196px" :disabled="props.isDisable" @click="stop(props.clockfaceData!.setDelayId)">STOP
             </v-btn>
         </v-btn-toggle>
     </div>
+    <span>{{ clockfaceData }}</span>
+    <!-- <span>{{ clockfaceData && props.clockfaceData!.action }}</span> -->
 </template>

@@ -3,12 +3,13 @@ import { useTheme } from 'vuetify'
 import ClockFace from "./components/ClockFace/index.vue";
 import ActionButtons from "./components/ActionButtons/index.vue";
 import ControlButtons from "./components/ControlButtons/index.vue";
-import { onUpdated, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { Clockfaces } from './types';
 
 const theme = useTheme()
 
 const [clockfaceData, switchTheme, isDisable] = [ref(), ref("mdi-weather-sunny"), ref<boolean>(true)]
+
 
 function toggleTheme() {
   if(theme.global.current.value.dark){
@@ -20,14 +21,13 @@ function toggleTheme() {
   }
 }
 
-onUpdated(() => {
-  clockfaceData && clockfaceData.value.clockfaces.reduce((prev: number, curr: Clockfaces) => prev + curr.vl, 0) === 0 ?
-    clearInterval(clockfaceData.value.setDelayId.intervalId) : null
-})
-
 watch(clockfaceData, () => isDisable.value = clockfaceData.value.clockfaces.reduce((prev: number, curr: Clockfaces) => prev + curr.vl, 0) === 0)
 
-watch(isDisable, () => clearInterval(clockfaceData.value.setDelayId.intervalId))
+watch(isDisable, () => {
+  clearInterval(clockfaceData.value.setDelayId.intervalId)
+})
+
+watch(clockfaceData, () => console.log(clockfaceData))
 
 </script>
 
@@ -36,7 +36,7 @@ watch(isDisable, () => clearInterval(clockfaceData.value.setDelayId.intervalId))
     <main class="container">
       <v-btn style="position: absolute; right: 10px; top: 10px;" icon variant="plain" @click="toggleTheme"><v-icon >{{switchTheme}}</v-icon></v-btn>
       <ClockFace @response="(msg: any) => clockfaceData = msg" />
-      <ActionButtons @response="(msg: any) => clockfaceData.action = msg" />
+      <ActionButtons @response="(msg: any) => clockfaceData.setDelayId.actionName = msg" />
       <ControlButtons :isDisable="isDisable" :clockfaceData="clockfaceData"/>
     </main>
   </v-app>

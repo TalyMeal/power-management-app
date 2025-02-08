@@ -6,7 +6,8 @@ import { Clockfaces } from "../../types";
 
 const setDelayId = reactive({
     intervalId: 0,
-    timeoutId: 0
+    timeoutId: 0,
+    actionName: ''
 })
 
 const clockfaces: Clockfaces[] = reactive([
@@ -16,8 +17,10 @@ const clockfaces: Clockfaces[] = reactive([
 ])
 
 onUpdated(() => {
-    clockfaces.reduce((prev, curr) => prev + curr.vl, 0) === 0 ?
-        clearInterval(setDelayId.intervalId) : null
+    if(clockfaces.reduce((prev, curr) => prev + curr.vl, 0) === 0) {
+        clearInterval(setDelayId.intervalId)
+        clearTimeout(setDelayId.timeoutId)
+    } 
 })
 
 const emit = defineEmits(['response'])
