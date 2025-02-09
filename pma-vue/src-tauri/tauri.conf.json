@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Power Management Timer",
+  "productName": "power-management-timer",
   "version": "1.0.0",
   "identifier": "com.pma-vue.app",
   "build": {

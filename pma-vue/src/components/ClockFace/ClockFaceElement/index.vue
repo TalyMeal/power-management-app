@@ -36,7 +36,7 @@ const onChange = (e: any) => {
 </script>
 
 <template>
-  <div>
+  <div class="d-flex align-center flex-column justify-center pa-6">
     <input v-model="props.count" 
           placeholder="00" 
           @input="onChange" 
