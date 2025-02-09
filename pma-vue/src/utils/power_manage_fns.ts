@@ -14,5 +14,3 @@ export function sleep(time: number) {
     const setTimeoutId = setTimeout(() => invoke("os_sleep"), time)
     return setTimeoutId
 }
-
-// не обновлется setTimeoutId при ручном вводе времени или окончании таймера, если запустить повторно

@@ -1,40 +1,37 @@
 <script setup lang="ts">
 
-import { onUpdated, reactive, watch } from "vue";
+import { onUpdated, watch } from "vue";
 import ClockFaceElement from "./ClockFaceElement/index.vue"
-import { Clockfaces } from "../../types";
+import { Clockfaces, DelayIds } from "../../types";
 
-const setDelayId = reactive({
-    intervalId: 0,
-    timeoutId: 0,
-    actionName: ''
-})
-
-const clockfaces: Clockfaces[] = reactive([
-    { id: 1, label: 'hours', limit: 23, vl: 0 },
-    { id: 2, label: 'minutes', limit: 59, vl: 0 },
-    { id: 3, label: 'seconds', limit: 59, vl: 0 }
-])
+const props = defineProps<{
+  clockfaces: Clockfaces[]; // Массив объектов ClockfaceItem
+  setDelayId: DelayIds;
+}>();
 
 onUpdated(() => {
-    if(clockfaces.reduce((prev, curr) => prev + curr.vl, 0) === 0) {
-        clearInterval(setDelayId.intervalId)
-        clearTimeout(setDelayId.timeoutId)
+    if(props.clockfaces.reduce((prev, curr) => prev + curr.vl, 0) === 0) {
+        clearInterval(props.setDelayId.intervalId)
+        clearTimeout(props.setDelayId.timeoutId)
     } 
 })
 
 const emit = defineEmits(['response'])
 
-watch(clockfaces, () => emit('response', {clockfaces, setDelayId}))
+watch(props.clockfaces, () => emit('response', props.clockfaces))
 
 </script>
 
 <template>
     <div class="d-flex align-center flex-row justify-center pa-3">
-        <v-form class="d-flex align-center flex-column ma-4" style="width: 98px" v-for="clockface in clockfaces"
-            :key="clockface.id">
-            <ClockFaceElement :label="clockface.label" :limit="clockface.limit" :count="clockface.vl"
-                @response="(msg) => clockface.vl = msg" />
+        <v-form class="d-flex align-center flex-column ma-4" 
+                style="width: 98px" 
+                v-for="clockface in props.clockfaces"
+                :key="clockface.id">
+            <ClockFaceElement :label="clockface.label" 
+                              :limit="clockface.limit" 
+                              :count="clockface.vl" 
+                              @response="(conut: number) => clockface.vl = conut" />
         </v-form>
     </div>
 </template>

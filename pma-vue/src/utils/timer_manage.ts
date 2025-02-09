@@ -1,9 +1,10 @@
 import { Clockfaces } from "../types";
 import { reboot, shutdown, sleep } from "./power_manage_fns";
 
-export function start(clockfaces: Clockfaces[], setDelayId: {
-    intervalId: number; timeoutId: number, actionName: string
-}) {
+export function start(
+    clockfaces: Clockfaces[], 
+    setDelayId: { intervalId: number; timeoutId: number }, 
+    actionName: string) {
         setDelayId.intervalId = setInterval(() => {
 
             if (clockfaces[1].vl === 0 && clockfaces[2].vl === 0 && clockfaces[0].vl > 0) {
@@ -36,7 +37,7 @@ export function start(clockfaces: Clockfaces[], setDelayId: {
         }, 0)
 
 
-        switch (setDelayId.actionName) {
+        switch (actionName) {
             case 'sleep':
                 setDelayId.timeoutId = sleep(delay * 1000)
               break;
@@ -57,6 +58,4 @@ export function stop(setDelayId: {
 }) {
     clearInterval(setDelayId.intervalId)
     clearTimeout(setDelayId.timeoutId)
-    setDelayId.intervalId = 0
-    setDelayId.timeoutId = 0
 }
